@@ -7,6 +7,16 @@
   --card-shadow: 0 8px 24px rgba(16,24,40,0.06);
 }
 
+/* Dark theme variables */
+.theme-dark {
+  --bg: #071124;
+  --card: #071827;
+  --accent: #60a5fa;
+  --text: #e6eef8;
+  --muted: #98a8ba;
+  --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html,body,#root { height: 100%; }
@@ -135,6 +145,47 @@ h1 { font-size: 1.6rem; letter-spacing: -0.02em }
   box-shadow: var(--card-shadow);
   cursor: pointer;
 }
+
+/* Theme toggle (top-right) small adjustments */
+.theme-toggle { position: fixed; right: 16px; top: 16px; z-index:120 }
+
+/* Quick actions bar styling */
+.quick-actions-bar { background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.06) }
+.quick-action-btn { background: rgba(0,123,255,0.08); color: var(--text); border: none }
+.quick-action-btn:hover { opacity: 0.95; transform: translateY(-1px) }
+
+/* Dark theme adjustments */
+.theme-dark .quick-actions-bar { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .quick-action-btn { background: linear-gradient(90deg, rgba(96,165,250,0.12), rgba(56,189,248,0.06)); color: var(--text) }
+
+/* Ensure logout button is visible in dark mode */
+.theme-dark .logout-btn { border-color: rgba(255,255,255,0.06); color: var(--text); background: rgba(255,255,255,0.02) }
+.theme-dark .logout-btn:hover { background: rgba(255,255,255,0.04) }
+
+/* Chat dark mode fixes: make bubbles, avatars and inputs readable */
+.theme-dark .chat-window { background: transparent }
+.theme-dark .chat-list { color: var(--text) }
+.theme-dark .bubble { background: rgba(255,255,255,0.04); color: var(--text) }
+.theme-dark .chat-row.user .bubble { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .chat-row.user .avatar { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .avatar { background: rgba(255,255,255,0.04); color: var(--accent) }
+.theme-dark .chat-input input { background: rgba(255,255,255,0.02); color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .chat-input button { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .typing-dots span { background: rgba(255,255,255,0.16) }
+
+/* ensure quick actions contrast in dark */
+.theme-dark .quick-action-btn { color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+
+/* Auth page dark-mode tweaks */
+.theme-dark .auth-page { background: transparent; color: var(--text) }
+.theme-dark .auth-card { background: var(--card); box-shadow: var(--card-shadow); color: var(--text) }
+.theme-dark .auth-card h2 { color: var(--accent) }
+.theme-dark .auth-card .subtitle { color: var(--muted) }
+.theme-dark .auth-form input { background: rgba(255,255,255,0.02); color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .btn.primary { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .form-error { background: rgba(185,28,28,0.06); color: #fecaca }
+
+
 
 .slide-nav {
   position: fixed;
