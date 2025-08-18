@@ -1,0 +1,225 @@
+:root {
+  --bg: #f6f9ff; /* page background */
+  --card: #ffffff; /* card background */
+  --accent: #2563eb; /* blue-600 */
+  --text: #0f172a; /* dark text */
+  --muted: #6b7280; /* muted text */
+  --card-shadow: 0 8px 24px rgba(16,24,40,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html,body,#root { height: 100%; }
+
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #eef4ff);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 2rem;
+}
+
+.app {
+  /* fill the available viewport width so dashboard stretches across the screen */
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  background: transparent;
+}
+
+h1 { color: var(--accent); margin-bottom: .5rem; }
+
+.subtitle { color: var(--muted); margin-bottom: .5rem }
+
+/* Dashboard grid and cards */
+.dashboard { padding: 0; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(160px, auto);
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid rgba(15,23,42,0.04);
+  padding: 1.25rem;
+  border-radius: 14px;
+  min-height: 120px;
+  box-shadow: var(--card-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(16,24,40,0.10);
+}
+
+/* Modern UI tweaks */
+body { font-size: 15px }
+h1 { font-size: 1.6rem; letter-spacing: -0.02em }
+.subtitle { font-size: 0.95rem }
+
+.pill {
+  display:inline-block; padding:6px 10px; border-radius:999px; background:linear-gradient(90deg, rgba(37,99,235,0.12), rgba(56,189,248,0.06)); color:var(--accent); font-weight:600; font-size:0.85rem
+}
+
+.nav-item a { display:block; padding:0.6rem 0.75rem; border-radius:8px; color:var(--text); text-decoration:none; transition: background 160ms ease, color 160ms ease }
+.nav-item a.active { background: rgba(37,99,235,0.12); color:var(--accent) }
+
+.line-chart { border-radius:10px; background: linear-gradient(180deg, rgba(37,99,235,0.02), rgba(56,189,248,0.01)); padding:8px }
+
+.week-chart { padding: 1.25rem; border-radius:14px }
+
+/* subtle anims for chart elements */
+.row-fill { transition: width 420ms cubic-bezier(.2,.9,.2,1) }
+
+/* better spacing on large screens */
+@media (min-width: 1200px) {
+  .app { padding: 3rem 4rem }
+  .grid { gap: 1.25rem }
+}
+
+.card h2 { margin-bottom: .5rem; font-size: 1.05rem; color: var(--accent); }
+
+.calendar-card .calendar-body { display:flex; flex-direction:column; gap:.25rem }
+.calendar-card .date { font-weight:700; font-size:1.25rem }
+.calendar-card .time { color: var(--muted) }
+
+/* calendar grid */
+.calendar-grid { display:flex; flex-direction:column; gap:.5rem }
+.calendar-header { display:flex; justify-content:space-between; align-items:center }
+.weekdays { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; color:var(--muted); font-size:0.75rem }
+.weekday { text-align:center }
+.weeks { display:flex; flex-direction:column; gap:4px }
+.week { display:grid; grid-template-columns:repeat(7,1fr); gap:4px }
+.day { min-height:36px; padding:8px; border-radius:8px; text-align:center; color:var(--text) }
+.day.today { background: var(--accent); color: white; font-weight:700 }
+
+
+.chart-card { display:flex; flex-direction:column; gap:.5rem }
+.line-chart { height: 140px; width: 100%; display:block }
+.labels { display:flex; justify-content:space-between; font-size:0.75rem; color: var(--muted) }
+
+.bar-card .bar-list { display:flex; flex-direction:column; gap:.75rem }
+.bar-row { display:grid; grid-template-columns: 120px 1fr 72px; align-items:center; gap:0.75rem }
+.row-label { color: var(--text); font-size:0.95rem }
+.row-bar { background: #eef2ff; height:18px; border-radius:999px; overflow:hidden }
+.row-fill { height:100%; border-radius:999px }
+.row-value { text-align:right; color: var(--muted); font-weight:600 }
+
+.percent-card .percent-body { display:flex; flex-direction:column; gap:.5rem }
+.percent-card .percent-circle { display:flex; justify-content:center; align-items:center }
+.percent-card svg { display:block }
+
+@media (max-width:640px) {
+  .grid { grid-template-columns: 1fr }
+}
+
+.week-chart { margin-top: 1rem; padding: 1rem }
+.week-chart h2 { color: var(--accent); margin-bottom: .5rem }
+
+/* Navigation */
+.nav-toggle {
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  z-index: 60;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(15,23,42,0.06);
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+}
+
+.slide-nav {
+  position: fixed;
+  left: -320px;
+  top: 0;
+  bottom: 0;
+  width: 320px;
+  background: var(--card);
+  box-shadow: 8px 0 24px rgba(16,24,40,0.06);
+  transition: left 220ms cubic-bezier(.2,.9,.2,1);
+  z-index: 70;
+  padding: 1.25rem;
+}
+.slide-nav.open { left: 0 }
+.nav-inner { display:flex; flex-direction:column; gap:1rem }
+.nav-brand { font-weight:700; color:var(--accent); font-size:1.05rem }
+.nav-list { list-style:none; display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem }
+.nav-item a { display:block; padding:0.6rem 0.75rem; border-radius:8px; color:var(--text); text-decoration:none }
+.nav-item a:hover { background: rgba(37,99,235,0.06); color:var(--accent) }
+
+.nav-backdrop { position:fixed; inset:0; background:rgba(2,6,23,0.35); opacity:0; pointer-events:none; transition:opacity 160ms ease; z-index:65 }
+.nav-backdrop.show { opacity:1; pointer-events:auto }
+
+@media (min-width: 900px) {
+  /* Keep the toggle visible on desktop and keep the slide-nav hidden by default.
+     The user asked the nav to be hidden first; opening it will slide it in.
+     We keep the nav fixed so it overlays content on open. */
+  .slide-nav { width: 260px }
+  .nav-backdrop { /* backdrop still used to dismiss nav on desktop */ }
+}
+
+/* Chat window */
+.chat-window { display:flex; flex-direction:column; gap:0.75rem; max-width:900px; margin-top:1rem }
+.chat-window { margin-left: auto; margin-right: auto }
+.chat-list { display:flex; flex-direction:column; gap:0.6rem; overflow:auto; max-height:420px; padding:0.5rem }
+.chat-row { display:flex; gap:0.6rem; align-items:flex-end }
+.chat-row.bot { justify-content:flex-start }
+.chat-row.user { justify-content:flex-end }
+.avatar { width:32px; height:32px; border-radius:8px; background:#eef2ff; display:flex; align-items:center; justify-content:center; color:var(--accent); font-weight:700 }
+.bubble { max-width:70%; padding:0.6rem 0.9rem; border-radius:12px; background:#f3f4f6; color:var(--text) }
+.chat-row.user .bubble { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white }
+.chat-row.user .avatar { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white }
+.chat-input { display:flex; gap:0.5rem; align-items:center }
+.chat-input input { flex:1; padding:0.6rem 0.9rem; border-radius:10px; border:1px solid rgba(15,23,42,0.06) }
+.chat-input button { padding:0.6rem 0.9rem; border-radius:10px; background:var(--accent); color:white; border:none; cursor:pointer }
+
+/* typing indicator */
+.typing-dots { display:inline-flex; gap:6px; align-items:center }
+.typing-dots span { width:6px; height:6px; background:rgba(15,23,42,0.12); border-radius:50%; display:inline-block; animation: bounce 1s infinite }
+.typing-dots span:nth-child(2) { animation-delay: 0.12s }
+.typing-dots span:nth-child(3) { animation-delay: 0.24s }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: .4 }
+  40% { transform: translateY(-6px); opacity: 1 }
+}
+
+/* Settings switches */
+.settings-panel { display:flex; flex-direction:column; gap:1rem; max-width:640px }
+.settings-page { display:flex; flex-direction:column; align-items:center }
+.settings-panel { margin-left:auto; margin-right:auto }
+
+.chatbot-page { display:flex; flex-direction:column; align-items:center }
+.chatbot-page .chat-window { width:100%; max-width:760px }
+
+/* Auth page */
+.auth-page { min-height: calc(100vh - 4rem); display:flex; align-items:center; justify-content:center }
+.auth-card { width:100%; max-width:440px; padding:2rem }
+.auth-form { display:flex; flex-direction:column; gap:0.75rem }
+.field { display:flex; flex-direction:column; gap:0.25rem }
+.field-label { font-size:0.85rem; color:var(--muted) }
+.auth-form input { padding:0.6rem 0.8rem; border-radius:8px; border:1px solid rgba(15,23,42,0.06) }
+.btn { padding:0.6rem 0.9rem; border-radius:8px; border:1px solid rgba(15,23,42,0.06); background:transparent; cursor:pointer }
+.btn.primary { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white; border:none }
+.form-error { color: #b91c1c; background: rgba(185,28,28,0.04); padding:0.5rem; border-radius:8px }
+.setting-row { display:flex; justify-content:space-between; align-items:center; gap:1rem }
+.setting-label { font-weight:600; color:var(--text) }
+.setting-control { }
+.switch { position:relative; display:inline-block; width:56px; height:32px }
+.switch input { opacity:0; width:0; height:0 }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#e6eef8; transition:.2s; border-radius:999px; }
+.slider:before { content:''; position:absolute; height:24px; width:24px; left:4px; top:4px; background:white; border-radius:50%; box-shadow: 0 2px 6px rgba(16,24,40,0.08); transition:.2s }
+.switch input:checked + .slider { background: linear-gradient(90deg,var(--accent),#38bdf8) }
+.switch input:checked + .slider:before { transform: translateX(24px) }
+
+.logout-row { display:flex; justify-content:flex-start }
+.logout-btn { background:transparent; border:1px solid rgba(15,23,42,0.06); padding:0.6rem 0.9rem; border-radius:10px; cursor:pointer }
+.logout-btn:hover { background: rgba(15,23,42,0.02) }
