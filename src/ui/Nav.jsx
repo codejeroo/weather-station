@@ -5,7 +5,8 @@ export default function Nav({ current, onNavigate }) {
   const links = [
     { key: 'dashboard', label: 'Dashboard' },
     { key: 'chatbot', label: 'Chatbot' },
-    { key: 'settings', label: 'Settings' }
+    { key: 'settings', label: 'Settings' },
+    { key: 'contact', label: 'Contact' }
   ]
 
   function handleClick(key) {

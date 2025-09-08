@@ -3,6 +3,7 @@ import Nav from './ui/Nav'
 import Dashboard from './pages/Dashboard'
 import Chatbot from './pages/Chatbot'
 import Settings from './pages/Settings'
+import Contact from './pages/Contact'
 import Auth from './pages/Auth'
 import { useEffect } from 'react'
 import ThemeToggle from './ui/ThemeToggle'
@@ -41,6 +42,7 @@ export default function App() {
           {page === 'dashboard' && <Dashboard />}
           {page === 'chatbot' && <Chatbot />}
           {page === 'settings' && <Settings />}
+          {page === 'contact' && <Contact />}
         </>
       )}
     </div>
