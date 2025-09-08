@@ -71,9 +71,9 @@ export default function Contact(){
       <div className="developer-info card" style={{marginTop:'2rem', padding:'2rem'}}>
         <h2>About the Developer</h2>
         <p><strong>Name:</strong> Ralph Angelo Gonzaga</p>
-        <p><strong>LinkedIn:</strong> <a href="#" target="_blank" rel="noopener noreferrer">https://linkedin.com/in/ralph-angelo-gonzaga</a></p>
-        <p><strong>Facebook:</strong> <a href="#" target="_blank" rel="noopener noreferrer">https://www.facebook.com/angelo.gonzaga0</a></p>
-        <p><strong>GitHub:</strong> <a href="#" target="_blank" rel="noopener noreferrer">https://www.linkedin.com/in/ralph-angelo-gonzaga-a32184320/</a></p>
+        <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/ralph-angelo-gonzaga" target="_blank" rel="noopener noreferrer">My LinkedIn</a></p>
+        <p><strong>Facebook:</strong> <a href="https://www.facebook.com/angelo.gonzaga0" target="_blank" rel="noopener noreferrer">My Facebook</a></p>
+        <p><strong>GitHub:</strong> <a href="https://github.com/codejeroo" target="_blank" rel="noopener noreferrer">My GitHub</a></p>
       </div>
     </div>
   )
