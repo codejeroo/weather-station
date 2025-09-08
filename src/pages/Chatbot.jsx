@@ -97,8 +97,8 @@ export default function Chatbot(){
       <h1>Chatbot</h1>
       <p className="subtitle">Ask about weather, sensors, or the system.</p>
 
-      <div className="chat-window card" style={{maxWidth:760, margin:'1rem auto'}}>
-        <div className="chat-list" ref={listRef} style={{maxHeight:360, overflowY:'auto', padding:12}}>
+      <div className="chat-window card" style={{margin:'1rem auto'}}>
+        <div className="chat-list" ref={listRef} style={{overflowY:'auto', padding:12}}>
           {messages.map((m, i) => {
             if(m.role === 'system'){
               return <div key={i} className="chat-row system"><div className="bubble" style={{background:'transparent', color:'var(--muted)', textAlign:'center'}}>{m.content}</div></div>
@@ -129,9 +129,9 @@ export default function Chatbot(){
           ))}
         </div>
 
-        <form className="chat-input" onSubmit={handleSend} style={{display:'flex', gap:8, padding:12}}>
-          <input placeholder="Type a message..." value={input} onChange={e=>setInput(e.target.value)} disabled={loading || !getRuntimeKey()} style={{flex:1, padding:'10px'}} />
-          <button type="submit" disabled={loading || !getRuntimeKey()} style={{padding:'10px 14px'}}>{loading ? '...' : 'Send'}</button>
+        <form className="chat-input" onSubmit={handleSend}>
+          <input placeholder="Type a message..." value={input} onChange={e=>setInput(e.target.value)} disabled={loading || !getRuntimeKey()} />
+          <button type="submit" disabled={loading || !getRuntimeKey()}>{loading ? '...' : 'Send'}</button>
         </form>
       </div>
     </div>

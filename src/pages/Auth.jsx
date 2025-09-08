@@ -37,7 +37,7 @@ export default function Auth({ onAuth }){
 
   return (
     <div className="auth-page" style={{display:'flex', alignItems:'center', justifyContent:'center', minHeight:'70vh', padding:'2rem'}}>
-      <div style={{textAlign:'center', marginBottom:32, marginRight: 30}}>
+      <div className="auth-header">
         <div style={{display:'inline-flex', alignItems:'center', justifyContent:'center', width:68, height:68, borderRadius:16, margin:'0 auto 12px', background:'linear-gradient(135deg, rgba(79,70,229,0.12), rgba(99,102,241,0.06))'}}>
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{color:'var(--accent)'}}>
             <path d="M20 18.5a3.5 3.5 0 0 0 .5-6.974A5 5 0 0 0 7 8.5 4.5 4.5 0 0 0 7.5 17h12.5z" fill="currentColor" opacity="0.95" />
