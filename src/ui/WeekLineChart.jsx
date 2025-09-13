@@ -15,7 +15,7 @@ export default function WeekLineChart() {
   return (
     <div className="week-chart card">
       <h2>Past week data</h2>
-      <div style={{ width: '100%', height: 280 }}>
+      <div style={{ width: '100%', height: 180 }}>
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />

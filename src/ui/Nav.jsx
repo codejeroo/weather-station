@@ -23,7 +23,7 @@ export default function Nav({ current, onNavigate }) {
 
       <nav className={`slide-nav ${open ? 'open' : ''}`} aria-hidden={!open}>
         <div className="nav-inner">
-          <div className="nav-brand">Weather Station</div>
+          <div className="nav-brand">MicroClimate.AI</div>
           <ul className="nav-list">
             {links.map(l => (
               <li key={l.key} className="nav-item"><a href="#" onClick={(e) => { e.preventDefault(); handleClick(l.key) }} className={current===l.key? 'active':''}>{l.label}</a></li>

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react'
 
 export default function Chatbot(){
   const [messages, setMessages] = useState([
-    { role: 'system', content: "You're a weather station based on Butuan City." },
-    { role: 'assistant', content: "Hi! I’m your Butuan City weather assistant. Ask me about the weather, what to wear, or any local advice!" }
+    { role: 'system', content: "You're MicroClimate.AI, an advanced climate monitoring system based in Butuan City." },
+    { role: 'assistant', content: "Hi! I'm your MicroClimate.AI assistant. Ask me about climate data, weather patterns, or local environmental insights!" }
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
@@ -79,9 +79,9 @@ export default function Chatbot(){
   }
 
   const quickActions = [
-    { label: '☀ Today\'s forecast', prompt: 'What is today\'s weather forecast for Butuan City?'} ,
-    { label: '🌧 Rain alerts', prompt: 'Are there any rain alerts for Butuan City today?'} ,
-    { label: '👕 What to wear', prompt: 'What should I wear today in Butuan City based on the weather?'}
+    { label: '☀ Today\'s forecast', prompt: 'What is today\'s climate forecast for Butuan City?'},
+    { label: '🌧 Rain alerts', prompt: 'Are there any precipitation alerts for Butuan City today?'},
+    { label: '🌡️ Climate insights', prompt: 'What are the current climate patterns in Butuan City?'}
   ]
 
   function onQuick(action){
@@ -95,7 +95,7 @@ export default function Chatbot(){
   return (
     <div className="chatbot-page" style={{padding:'2rem'}}>
       <h1>Chatbot</h1>
-      <p className="subtitle">Ask about weather, sensors, or the system.</p>
+      <p className="subtitle">Ask about climate data, weather patterns, or environmental insights.</p>
 
       <div className="chat-window card" style={{margin:'1rem auto'}}>
         <div className="chat-list" ref={listRef} style={{overflowY:'auto', padding:12}}>
@@ -106,7 +106,7 @@ export default function Chatbot(){
             const cls = m.role === 'user' ? 'user' : 'bot'
             return (
               <div key={i} className={`chat-row ${cls}`}>
-                <div className="avatar">{cls === 'user' ? 'U' : 'B'}</div>
+                <div className="avatar">{cls === 'user' ? 'U' : 'M'}</div>
                 <div className="bubble">{m.content}</div>
               </div>
             )
@@ -114,7 +114,7 @@ export default function Chatbot(){
 
           {loading && (
             <div className={`chat-row bot typing`}>
-              <div className="avatar">B</div>
+              <div className="avatar">M</div>
               <div className="bubble"><span className="typing-dots"><span></span><span></span><span></span></span></div>
             </div>
           )}

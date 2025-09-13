@@ -38,14 +38,14 @@ export default function Auth({ onAuth }){
   return (
     <div className="auth-page" style={{display:'flex', alignItems:'center', justifyContent:'center', minHeight:'70vh', padding:'2rem'}}>
       <div className="auth-header">
-        <div style={{display:'inline-flex', alignItems:'center', justifyContent:'center', width:68, height:68, borderRadius:16, margin:'0 auto 12px', background:'linear-gradient(135deg, rgba(79,70,229,0.12), rgba(99,102,241,0.06))'}}>
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{color:'var(--accent)'}}>
-            <path d="M20 18.5a3.5 3.5 0 0 0 .5-6.974A5 5 0 0 0 7 8.5 4.5 4.5 0 0 0 7.5 17h12.5z" fill="currentColor" opacity="0.95" />
-            <path d="M7.5 17H20a3 3 0 0 0 0-6h-.5" stroke="rgba(0,0,0,0.06)" strokeWidth="0" />
-          </svg>
+        <div style={{display:'inline-flex', alignItems:'center', justifyContent:'center', width:68, height:68, borderRadius:16, margin:'0 auto 12px'}}>
+          <img src="/src/images/logo.png" alt="MicroClimate.AI Logo" style={{width:128, height:128, objectFit:'contain'}} />
         </div>
-        <h1 style={{fontFamily:"'Poppins', system-ui, Inter, sans-serif", fontSize:32, margin:0, letterSpacing:0.2}}>Weather Station</h1>
-        <div style={{color:'var(--muted)', marginTop:8}}>Local weather and station assistant</div>
+        <h1 style={{fontFamily:"'Poppins', system-ui, Inter, sans-serif", fontSize:32, margin:0, letterSpacing:0.2}}>
+          <span style={{color:'#1d4ed8'}}>Micro</span>
+          <span style={{color:'var(--text)'}}>Climate.AI</span>
+        </h1>
+        <div style={{color:'var(--muted)', marginTop:8}}> Your ESP32 Based Weather Monitoring & AI Assistant</div>
       </div>
 
       <div className="auth-card card" style={{width:420, padding:'30px 24px', borderRadius:12, boxShadow:'0 8px 30px rgba(16,24,40,0.08)'}}>

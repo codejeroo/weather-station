@@ -23,7 +23,7 @@ export default function Contact(){
   return (
     <div className="contact-page" style={{padding:'2rem', maxWidth:800, margin:'0 auto'}}>
       <h1>Contact Developer</h1>
-      <p className="subtitle">Get in touch with the developer of this weather station app.</p>
+      <p className="subtitle">Get in touch with the developer of MicroClimate.AI.</p>
 
       <div className="contact-form card" style={{marginTop:'2rem', padding:'2rem'}}>
         <h2>Send a Message</h2>
