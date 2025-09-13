@@ -39,7 +39,7 @@ export default function Auth({ onAuth }){
     <div className="auth-page" style={{display:'flex', alignItems:'center', justifyContent:'center', minHeight:'70vh', padding:'2rem'}}>
       <div className="auth-header">
         <div style={{display:'inline-flex', alignItems:'center', justifyContent:'center', width:68, height:68, borderRadius:16, margin:'0 auto 12px'}}>
-          <img src="/src/images/logo.png" alt="MicroClimate.AI Logo" style={{width:128, height:128, objectFit:'contain'}} />
+          <img src="/logo.png" alt="MicroClimate.AI Logo" style={{width:128, height:128, objectFit:'contain'}} />
         </div>
         <h1 style={{fontFamily:"'Poppins', system-ui, Inter, sans-serif", fontSize:32, margin:0, letterSpacing:0.2}}>
           <span style={{color:'#1d4ed8'}}>Micro</span>
