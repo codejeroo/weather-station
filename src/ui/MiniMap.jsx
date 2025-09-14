@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
+import RiskIndicator from './RiskIndicator'
+import { getMockWeatherData } from '../utils/floodRisk'
 
 // Fix for default markers in Leaflet with React
 import L from 'leaflet'
@@ -14,6 +16,22 @@ L.Icon.Default.mergeOptions({
 export default function MiniMap() {
   // Coordinates for Butuan City, Philippines
   const position = [8.9489, 125.5436]
+
+  const [weatherData, setWeatherData] = useState(null)
+  const [showRecommendations, setShowRecommendations] = useState(false)
+
+  // Simulate real-time weather data updates
+  useEffect(() => {
+    // Initial data
+    setWeatherData(getMockWeatherData())
+
+    // Update weather data every 30 seconds for demo
+    const interval = setInterval(() => {
+      setWeatherData(getMockWeatherData())
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="mini-map card">
@@ -31,6 +49,45 @@ export default function MiniMap() {
           </Popup>
         </Marker>
       </MapContainer>
+
+      <RiskIndicator
+        weatherData={weatherData}
+        location="Butuan City"
+        showRecommendations={showRecommendations}
+      />
+
+      <div style={{
+        marginTop: '8px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <button
+          onClick={() => setShowRecommendations(!showRecommendations)}
+          style={{
+            fontSize: '11px',
+            padding: '4px 8px',
+            background: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            borderRadius: '6px',
+            color: 'var(--text)',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          {showRecommendations ? 'Hide' : 'Show'} Recommendations
+        </button>
+
+        {weatherData && (
+          <div style={{
+            fontSize: '10px',
+            color: 'var(--muted)',
+            textAlign: 'right'
+          }}>
+            Last updated: {new Date().toLocaleTimeString()}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

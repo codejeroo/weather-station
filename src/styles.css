@@ -429,3 +429,95 @@ h1 { font-size: 1.6rem; letter-spacing: -0.02em }
     font-size: 1rem;
   }
 }
+
+/* Thermometer Bar Styles */
+.thermometer-container {
+  position: relative;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.thermometer-container::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+/* Enhanced bar card styles */
+.bar-card .bar-row {
+  transition: transform 0.2s ease;
+}
+
+.bar-card .bar-row:hover {
+  transform: translateX(2px);
+}
+
+.bar-card .row-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-card .row-fill {
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .thermometer-container {
+    height: 20px;
+  }
+
+  .thermometer-container::after {
+    width: 14px;
+    height: 14px;
+    right: -6px;
+  }
+}
+
+/* Risk Indicator Styles */
+.risk-indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.risk-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  pointer-events: none;
+}
+
+.risk-indicator:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.risk-indicator > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive adjustments for risk indicator */
+@media (max-width: 767px) {
+  .risk-indicator {
+    padding: 12px;
+    margin-top: 8px;
+  }
+
+  .risk-indicator div:first-child {
+    font-size: 20px;
+  }
+}
