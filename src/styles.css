@@ -1,0 +1,523 @@
+:root {
+  --bg: #f6f9ff; /* page background */
+  --card: #ffffff; /* card background */
+  --accent: #2563eb; /* blue-600 */
+  --text: #0f172a; /* dark text */
+  --muted: #6b7280; /* muted text */
+  --card-shadow: 0 8px 24px rgba(16,24,40,0.06);
+}
+
+/* Dark theme variables */
+.theme-dark {
+  --bg: #071124;
+  --card: #071827;
+  --accent: #60a5fa;
+  --text: #e6eef8;
+  --muted: #98a8ba;
+  --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html,body,#root { height: 100%; }
+
+body {
+  font-family: Inter, system-ui, Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg), #eef4ff);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 2rem;
+}
+
+.app {
+  /* fill the available viewport width so dashboard stretches across the screen */
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 2rem;
+  background: transparent;
+}
+
+h1 { color: var(--accent); margin-bottom: .5rem; }
+
+.subtitle { color: var(--muted); margin-bottom: .5rem }
+
+/* Dashboard grid and cards */
+.dashboard { padding: 0; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: minmax(160px, auto);
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid rgba(15,23,42,0.04);
+  padding: 1.25rem;
+  border-radius: 14px;
+  min-height: 120px;
+  box-shadow: var(--card-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(16,24,40,0.10);
+}
+
+/* Modern UI tweaks */
+body { font-size: 15px }
+h1 { font-size: 1.6rem; letter-spacing: -0.02em }
+.subtitle { font-size: 0.95rem }
+
+.pill {
+  display:inline-block; padding:6px 10px; border-radius:999px; background:linear-gradient(90deg, rgba(37,99,235,0.12), rgba(56,189,248,0.06)); color:var(--accent); font-weight:600; font-size:0.85rem
+}
+
+.nav-item a { display:block; padding:0.6rem 0.75rem; border-radius:8px; color:var(--text); text-decoration:none; transition: background 160ms ease, color 160ms ease }
+.nav-item a.active { background: rgba(37,99,235,0.12); color:var(--accent) }
+
+.line-chart { border-radius:10px; background: linear-gradient(180deg, rgba(37,99,235,0.02), rgba(56,189,248,0.01)); padding:8px }
+
+.week-chart { padding: 1.25rem; border-radius:14px }
+
+/* subtle anims for chart elements */
+.row-fill { transition: width 420ms cubic-bezier(.2,.9,.2,1) }
+
+/* better spacing on large screens */
+@media (min-width: 1200px) {
+  .app { padding: 3rem 4rem }
+  .grid { gap: 1.25rem }
+}
+
+.card h2 { margin-bottom: .5rem; font-size: 1.05rem; color: var(--accent); }
+
+.calendar-card .calendar-body { display:flex; flex-direction:column; gap:.25rem }
+.calendar-card .date { font-weight:700; font-size:1.25rem }
+.calendar-card .time { color: var(--muted) }
+
+/* calendar grid */
+.calendar-grid { display:flex; flex-direction:column; gap:.5rem }
+.calendar-header { display:flex; justify-content:space-between; align-items:center }
+.weekdays { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; color:var(--muted); font-size:0.75rem }
+.weekday { text-align:center }
+.weeks { display:flex; flex-direction:column; gap:4px }
+.week { display:grid; grid-template-columns:repeat(7,1fr); gap:4px }
+.day { min-height:36px; padding:8px; border-radius:8px; text-align:center; color:var(--text) }
+.day.today { background: var(--accent); color: white; font-weight:700 }
+
+
+.chart-card { display:flex; flex-direction:column; gap:.5rem }
+.line-chart { height: 140px; width: 100%; display:block }
+.labels { display:flex; justify-content:space-between; font-size:0.75rem; color: var(--muted) }
+
+.bar-card .bar-list { display:flex; flex-direction:column; gap:.75rem }
+.bar-row { display:grid; grid-template-columns: 120px 1fr 72px; align-items:center; gap:0.75rem }
+.row-label { color: var(--text); font-size:0.95rem }
+.row-bar { background: #eef2ff; height:18px; border-radius:999px; overflow:hidden }
+.row-fill { height:100%; border-radius:999px }
+.row-value { text-align:right; color: var(--muted); font-weight:600 }
+
+.percent-card .percent-body { display:flex; flex-direction:column; gap:.5rem }
+.percent-card .percent-circle { display:flex; justify-content:center; align-items:center }
+.percent-card svg { display:block }
+
+@media (max-width:640px) {
+  .grid { grid-template-columns: 1fr }
+}
+
+.week-chart { margin-top: 1rem; padding: 1.25rem }
+.week-chart h2 { color: var(--accent); margin-bottom: .5rem }
+
+/* Navigation */
+.nav-toggle {
+  position: fixed;
+  left: 8px;
+  top: 16px;
+  z-index: 60;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid rgba(15,23,42,0.06);
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  cursor: pointer;
+}
+
+/* Theme toggle (top-right) small adjustments */
+.theme-toggle { position: fixed; right: 16px; top: 16px; z-index:120 }
+
+/* Quick actions bar styling */
+.quick-actions-bar { background: rgba(255,255,255,0.6); border: 1px solid rgba(0,0,0,0.06) }
+.quick-action-btn { background: rgba(0,123,255,0.08); color: var(--text); border: none }
+.quick-action-btn:hover { opacity: 0.95; transform: translateY(-1px) }
+
+/* Dark theme adjustments */
+.theme-dark .quick-actions-bar { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .quick-action-btn { background: linear-gradient(90deg, rgba(96,165,250,0.12), rgba(56,189,248,0.06)); color: var(--text) }
+
+/* Ensure logout button is visible in dark mode */
+.theme-dark .logout-btn { border-color: rgba(255,255,255,0.06); color: var(--text); background: rgba(255,255,255,0.02) }
+.theme-dark .logout-btn:hover { background: rgba(255,255,255,0.04) }
+
+/* Chat dark mode fixes: make bubbles, avatars and inputs readable */
+.theme-dark .chat-window { background: transparent }
+.theme-dark .chat-list { color: var(--text) }
+.theme-dark .bubble { background: rgba(255,255,255,0.04); color: var(--text) }
+.theme-dark .chat-row.user .bubble { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .chat-row.user .avatar { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .avatar { background: rgba(255,255,255,0.04); color: var(--accent) }
+.theme-dark .chat-input input { background: rgba(255,255,255,0.02); color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .chat-input button { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .typing-dots span { background: rgba(255,255,255,0.16) }
+
+/* ensure quick actions contrast in dark */
+.theme-dark .quick-action-btn { color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+
+/* Auth page dark-mode tweaks */
+.theme-dark .auth-page { background: transparent; color: var(--text) }
+.theme-dark .auth-card { background: var(--card); box-shadow: var(--card-shadow); color: var(--text) }
+.theme-dark .auth-card h2 { color: var(--accent) }
+.theme-dark .auth-card .subtitle { color: var(--muted) }
+.theme-dark .auth-form input { background: rgba(255,255,255,0.02); color: var(--text); border: 1px solid rgba(255,255,255,0.04) }
+.theme-dark .btn.primary { background: linear-gradient(90deg,var(--accent),#38bdf8); color: #061226 }
+.theme-dark .form-error { background: rgba(185,28,28,0.06); color: #fecaca }
+
+
+
+.slide-nav {
+  position: fixed;
+  left: -320px;
+  top: 0;
+  bottom: 0;
+  width: 320px;
+  background: var(--card);
+  box-shadow: 8px 0 24px rgba(16,24,40,0.06);
+  transition: left 220ms cubic-bezier(.2,.9,.2,1);
+  z-index: 70;
+  padding: 1.25rem;
+}
+.slide-nav.open { left: 0 }
+.nav-inner { display:flex; flex-direction:column; gap:1rem }
+.nav-brand { font-weight:700; color:var(--accent); font-size:1.05rem }
+.nav-list { list-style:none; display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem }
+.nav-item a { display:block; padding:0.6rem 0.75rem; border-radius:8px; color:var(--text); text-decoration:none }
+.nav-item a:hover { background: rgba(37,99,235,0.06); color:var(--accent) }
+
+.nav-backdrop { position:fixed; inset:0; background:rgba(2,6,23,0.35); opacity:0; pointer-events:none; transition:opacity 160ms ease; z-index:65 }
+.nav-backdrop.show { opacity:1; pointer-events:auto }
+
+@media (min-width: 900px) {
+  /* Keep the toggle visible on desktop and keep the slide-nav hidden by default.
+     The user asked the nav to be hidden first; opening it will slide it in.
+     We keep the nav fixed so it overlays content on open. */
+  .slide-nav { width: 260px }
+  .nav-backdrop { /* backdrop still used to dismiss nav on desktop */ }
+}
+
+/* Chat window */
+.chat-window { display:flex; flex-direction:column; gap:0.75rem; max-width:900px; margin-top:1rem; margin-left: 1rem; margin-right: auto }
+.chat-list { display:flex; flex-direction:column; gap:0.6rem; overflow:auto; max-height:420px; padding:0.5rem }
+.chat-row { display:flex; gap:0.6rem; align-items:flex-end }
+.chat-row.bot { justify-content:flex-start }
+.chat-row.user { justify-content:flex-end }
+.avatar { width:32px; height:32px; border-radius:8px; background:#eef2ff; display:flex; align-items:center; justify-content:center; color:var(--accent); font-weight:700 }
+.bubble { max-width:70%; padding:0.6rem 0.9rem; border-radius:12px; background:#f3f4f6; color:var(--text) }
+.chat-row.user .bubble { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white }
+.chat-row.user .avatar { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white }
+.chat-input { display:flex; gap:0.5rem; align-items:center }
+.chat-input input { flex:1; padding:0.6rem 0.9rem; border-radius:10px; border:1px solid rgba(15,23,42,0.06) }
+.chat-input button { padding:0.6rem 0.9rem; border-radius:10px; background:var(--accent); color:white; border:none; cursor:pointer }
+
+/* typing indicator */
+.typing-dots { display:inline-flex; gap:6px; align-items:center }
+.typing-dots span { width:6px; height:6px; background:rgba(15,23,42,0.12); border-radius:50%; display:inline-block; animation: bounce 1s infinite }
+.typing-dots span:nth-child(2) { animation-delay: 0.12s }
+.typing-dots span:nth-child(3) { animation-delay: 0.24s }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: .4 }
+  40% { transform: translateY(-6px); opacity: 1 }
+}
+
+/* Settings switches */
+.settings-panel { display:flex; flex-direction:column; gap:1rem; max-width:640px }
+.settings-page { display:flex; flex-direction:column; align-items:center }
+.settings-panel { margin-left:auto; margin-right:auto }
+
+.chatbot-page { display:flex; flex-direction:column; align-items:center }
+.chatbot-page .chat-window { width:100%; max-width: none }
+
+@media (max-width: 767px) {
+  body { padding: 0; }
+  .app { padding: 0; }
+  .chatbot-page { padding: 0; }
+  .chatbot-page .chat-window {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .chat-list {
+    max-height: 65vh;
+    padding: 6px;
+  }
+  .chat-input {
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+  }
+  .chat-input input {
+    font-size: 0.98rem;
+    padding: 0.7rem 0.9rem;
+  }
+  .chat-input button {
+    font-size: 1rem;
+    padding: 0.7rem 0.9rem;
+    width: 100%;
+    margin-left: 0;
+  }
+  .bubble {
+    font-size: 0.98rem;
+    padding: 0.7rem 0.9rem;
+    max-width: 85%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+  .quick-actions-bar {
+    padding: 3px 6px;
+    margin-top: 3px;
+  }
+  .quick-action-btn {
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .subtitle { font-size: 0.9rem; margin-bottom: 1rem; }
+  h1 { font-size: 1.3rem; }
+  .subtitle { font-size: 0.98rem; }
+}
+
+/* Extra small mobile screens (375px and below) */
+@media (max-width: 375px) {
+  .chatbot-page h1 {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+  }
+  .chatbot-page .subtitle {
+    font-size: 0.8rem;
+    padding: 0 1rem;
+  }
+  .chat-list {
+    padding: 0.5rem;
+  }
+  .bubble {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem;
+    max-width: 78%;
+  }
+  .quick-action-btn {
+    font-size: 0.8rem;
+    padding: 5px 7px;
+  }
+  
+  /* Ensure chat window stretches to full width at 375px */
+  .chatbot-page .chat-window {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  .chat-window {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* Auth page */
+.auth-page { display: flex; align-items: center; justify-content: center; min-height: 70vh; padding: 2rem; flex-direction: row; }
+.auth-header { text-align: center; margin-bottom: 32px; margin-right: 30px; }
+
+@media (max-width: 767px) {
+  .auth-page { flex-direction: column; }
+  .auth-header { margin-bottom: 16px; margin-right: 0; }
+  .auth-header h1 { font-size: 28px; }
+}
+.auth-card { width:100%; max-width:440px; padding:2rem }
+.auth-form { display:flex; flex-direction:column; gap:0.75rem }
+.field { display:flex; flex-direction:column; gap:0.25rem }
+.field-label { font-size:0.85rem; color:var(--muted) }
+.auth-form input { padding:0.6rem 0.8rem; border-radius:8px; border:1px solid rgba(15,23,42,0.06) }
+.btn { padding:0.6rem 0.9rem; border-radius:8px; border:1px solid rgba(15,23,42,0.06); background:transparent; cursor:pointer }
+.btn.primary { background: linear-gradient(90deg,var(--accent),#38bdf8); color:white; border:none }
+.form-error { color: #b91c1c; background: rgba(185,28,28,0.04); padding:0.5rem; border-radius:8px }
+.setting-row { display:flex; justify-content:space-between; align-items:center; gap:1rem }
+.setting-label { font-weight:600; color:var(--text) }
+.setting-control { }
+.switch { position:relative; display:inline-block; width:56px; height:32px }
+.switch input { opacity:0; width:0; height:0 }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background:#e6eef8; transition:.2s; border-radius:999px; }
+.slider:before { content:''; position:absolute; height:24px; width:24px; left:4px; top:4px; background:white; border-radius:50%; box-shadow: 0 2px 6px rgba(16,24,40,0.08); transition:.2s }
+.switch input:checked + .slider { background: linear-gradient(90deg,var(--accent),#38bdf8) }
+.switch input:checked + .slider:before { transform: translateX(24px) }
+
+.logout-row { display:flex; justify-content:flex-start }
+.logout-btn { background:transparent; border:1px solid rgba(15,23,42,0.06); padding:0.6rem 0.9rem; border-radius:10px; cursor:pointer }
+.logout-btn:hover { background: rgba(15,23,42,0.02) }
+
+/* Dashboard bottom section */
+.bottom-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+
+.mini-map {
+  padding: 1.25rem;
+  border-radius: 14px;
+  background: var(--card);
+  border: 1px solid rgba(15,23,42,0.04);
+  box-shadow: var(--card-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.mini-map:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(16,24,40,0.10);
+}
+
+.mini-map h3 {
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+/* Leaflet map container styles */
+.leaflet-container {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsive for bottom section */
+@media (max-width: 767px) {
+  .bottom-section {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .mini-map h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Thermometer Bar Styles */
+.thermometer-container {
+  position: relative;
+  border-radius: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.thermometer-container::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: inherit;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  z-index: 1;
+}
+
+/* Enhanced bar card styles */
+.bar-card .bar-row {
+  transition: transform 0.2s ease;
+}
+
+.bar-card .bar-row:hover {
+  transform: translateX(2px);
+}
+
+.bar-card .row-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-card .row-fill {
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .thermometer-container {
+    height: 20px;
+  }
+
+  .thermometer-container::after {
+    width: 14px;
+    height: 14px;
+    right: -6px;
+  }
+}
+
+/* Risk Indicator Styles */
+.risk-indicator {
+  position: relative;
+  overflow: hidden;
+}
+
+.risk-indicator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  pointer-events: none;
+}
+
+.risk-indicator:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.risk-indicator > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive adjustments for risk indicator */
+@media (max-width: 767px) {
+  .risk-indicator {
+    padding: 12px;
+    margin-top: 8px;
+  }
+
+  .risk-indicator div:first-child {
+    font-size: 20px;
+  }
+}
