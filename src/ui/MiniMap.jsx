@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import RiskIndicator from './RiskIndicator'
+<<<<<<< HEAD
 import FloodRiskOverlay from './FloodRiskOverlay'
+=======
+>>>>>>> 2b9995006e1832c38b1f0bcef87cf990119727aa
 import { getMockWeatherData } from '../utils/floodRisk'
 
 // Fix for default markers in Leaflet with React
@@ -42,7 +45,10 @@ export default function MiniMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+<<<<<<< HEAD
         <FloodRiskOverlay position={position} weatherData={weatherData} />
+=======
+>>>>>>> 2b9995006e1832c38b1f0bcef87cf990119727aa
         <Marker position={position}>
           <Popup>
             <strong>Butuan City, Philippines</strong><br />
