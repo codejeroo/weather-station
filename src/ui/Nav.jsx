@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { supabase } from '../supabaseClient'  // Import the client
 
 export default function Nav({ current, onNavigate }) {
   const [open, setOpen] = useState(false)
@@ -15,6 +16,11 @@ export default function Nav({ current, onNavigate }) {
     onNavigate && onNavigate(key)
   }
 
+  async function handleLogout() {
+    setOpen(false)
+    await supabase.auth.signOut()
+  }
+
   return (
     <>
       <button className="nav-toggle" onClick={() => setOpen(o => !o)} aria-expanded={open}>
@@ -28,6 +34,7 @@ export default function Nav({ current, onNavigate }) {
             {links.map(l => (
               <li key={l.key} className="nav-item"><a href="#" onClick={(e) => { e.preventDefault(); handleClick(l.key) }} className={current===l.key? 'active':''}>{l.label}</a></li>
             ))}
+            <li className="nav-item"><a href="#" onClick={(e) => { e.preventDefault(); handleLogout() }}>Logout</a></li>
           </ul>
         </div>
       </nav>

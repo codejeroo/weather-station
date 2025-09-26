@@ -11,7 +11,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="grid">
         <CalendarCard />
-        <MiniMap />
+        <MiniMap key="dashboard-minimap" />
         <BarChartCard />
         <PercentCard />
       </div>

@@ -350,6 +350,29 @@ h1 { font-size: 1.6rem; letter-spacing: -0.02em }
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
+
+  /* Mini-map specific styles for 375px */
+  .mini-map {
+    margin-bottom: 1rem;
+    z-index: 1;
+  }
+
+  .mini-map .leaflet-container {
+    height: 180px !important;
+  }
+
+  /* Ensure navigation has higher z-index than mini-map */
+  .slide-nav {
+    z-index: 1000;
+  }
+
+  .nav-backdrop {
+    z-index: 999;
+  }
+
+  .nav-toggle {
+    z-index: 1001;
+  }
 }
 
 /* Auth page */
@@ -399,6 +422,8 @@ h1 { font-size: 1.6rem; letter-spacing: -0.02em }
   border: 1px solid rgba(15,23,42,0.04);
   box-shadow: var(--card-shadow);
   transition: transform 160ms ease, box-shadow 160ms ease;
+  position: relative;
+  z-index: 1;
 }
 
 .mini-map:hover {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { supabase } from '../supabaseClient'  // Import the client
 
 export default function Auth({ onAuth }){
   const [email, setEmail] = useState('')
@@ -24,12 +25,14 @@ export default function Auth({ onAuth }){
 
     setLoading(true)
     try{
-      // small fake delay to show loading animation
-      await new Promise(r => setTimeout(r, 700))
-      localStorage.setItem('auth_token','demo-token')
-      onAuth && onAuth()
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      if (error) throw error
+      // Auth state change will be handled in App.jsx
     }catch(err){
-      setError('Failed to sign in')
+      setError(err.message || 'Failed to sign in')
     }finally{
       setLoading(false)
     }
