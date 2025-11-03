@@ -31,7 +31,6 @@ export default function App() {
       if (session) {
         setAuthed(true)
         setUser(session.user)
-        setPage('dashboard')
       } else {
         setAuthed(false)
         setUser(null)
@@ -56,11 +55,11 @@ export default function App() {
   return (
     <div className="app">
       {!authed ? (
-        <Auth onAuth={onAuth} />
+        <Auth setAuthed={setAuthed} />
       ) : (
         <>
           <ThemeToggle theme={theme} setTheme={setTheme} />
-          <Nav current={page} onNavigate={setPage} />
+          <Nav current={page} onNavigate={setPage} setAuthed={setAuthed} />
           {page === 'dashboard' && <Dashboard />}
           {page === 'chatbot' && <Chatbot />}
           {page === 'settings' && <Settings />}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { supabase } from '../supabaseClient'  // Import the client
 
-export default function Nav({ current, onNavigate }) {
+export default function Nav({ current, onNavigate, setAuthed }) {
   const [open, setOpen] = useState(false)
   const links = [
     { key: 'dashboard', label: 'Dashboard' },
@@ -18,7 +18,12 @@ export default function Nav({ current, onNavigate }) {
 
   async function handleLogout() {
     setOpen(false)
-    await supabase.auth.signOut()
+    try {
+      await supabase.auth.signOut()
+      setAuthed(false)  // Manually set authed to false
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
 
   return (
