@@ -5,7 +5,6 @@ export default function Nav({ current, onNavigate, setAuthed }) {
   const [open, setOpen] = useState(false)
   const links = [
     { key: 'dashboard', label: 'Dashboard' },
-    { key: 'chatbot', label: 'Chatbot' },
     { key: 'contact', label: 'Contact' },
     { key: 'settings', label: 'Settings' }
     

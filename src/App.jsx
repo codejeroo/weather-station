@@ -5,6 +5,7 @@ import Chatbot from './pages/Chatbot'
 import Settings from './pages/Settings'
 import Contact from './pages/Contact'
 import Auth from './pages/Auth'
+import ChatWidget from './ui/ChatWidget'
 import { useEffect } from 'react'
 import ThemeToggle from './ui/ThemeToggle'
 import { supabase } from './supabaseClient'  // Import the client
@@ -64,6 +65,7 @@ export default function App() {
           {page === 'chatbot' && <Chatbot />}
           {page === 'settings' && <Settings />}
           {page === 'contact' && <Contact />}
+          <ChatWidget />
         </>
       )}
     </div>

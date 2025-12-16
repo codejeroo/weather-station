@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { calculatePrecipitationChance } from '../utils/sensorLogs'
 
 export default function PercentCard() {
-  const chance = 32 // dummy percent
+  const [chance, setChance] = useState(0)
+
+  useEffect(() => {
+    const loadPrecipitationChance = async () => {
+      const precipChance = await calculatePrecipitationChance()
+      setChance(Math.round(precipChance))
+    }
+    loadPrecipitationChance()
+    const interval = setInterval(loadPrecipitationChance, 300000)
+    return () => clearInterval(interval)
+  }, [])
+
   const radius = 40
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (chance / 100) * circumference

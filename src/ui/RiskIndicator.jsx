@@ -1,19 +1,51 @@
 import React, { useState, useEffect } from 'react'
 import { calculateFloodRisk, getMockWeatherData, riskDescriptions } from '../utils/floodRisk'
+import { getHazardZoneColor } from '../utils/geospatial'
 
-export default function RiskIndicator({ riskLevel, location = 'Butuan City', weatherData, showRecommendations = false }) {
+export default function RiskIndicator({ riskLevel, location = 'Butuan City', weatherData, showRecommendations = false, hazardZone = null }) {
   const [currentRisk, setCurrentRisk] = useState(riskLevel || 'safe')
   const [expanded, setExpanded] = useState(false)
+  const [hazardLabel, setHazardLabel] = useState('')
+  const [hazardColor, setHazardColor] = useState('')
 
   // Calculate risk level from weather data if provided
   useEffect(() => {
-    if (weatherData) {
-      const calculatedRisk = calculateFloodRisk(weatherData)
-      setCurrentRisk(calculatedRisk)
-    } else if (riskLevel) {
-      setCurrentRisk(riskLevel)
+    // Get hazard label and color
+    if (hazardZone !== null && hazardZone !== undefined) {
+      if (hazardZone >= 3) {
+        setHazardLabel('Extreme Flood Risk Zone')
+      } else if (hazardZone === 2) {
+        setHazardLabel('Very High Flood Risk Zone')
+      } else if (hazardZone === 1) {
+        setHazardLabel('High Flood Risk Zone')
+      } else if (hazardZone === 0) {
+        setHazardLabel('Moderate Flood Risk Zone')
+      } else if (hazardZone === -1) {
+        setHazardLabel('Low Flood Risk Zone')
+      } else if (hazardZone === -2) {
+        setHazardLabel('No Flood Risk Area')
+      } else if (hazardZone < -2) {
+        setHazardLabel('No Flood Risk Area')
+      } else {
+        setHazardLabel('No Hazard Zone')
+      }
+      setHazardColor(getHazardZoneColor(hazardZone))
+    } else {
+      setHazardLabel('No Hazard Zone')
+      setHazardColor('#10b981')
     }
-  }, [weatherData, riskLevel])
+
+    // Calculate weather risk based on hazard zone (new function signature)
+    let calculatedRisk = 'safe'
+    if (weatherData) {
+      // Pass hazard zone to calculateFloodRisk for integrated assessment
+      calculatedRisk = calculateFloodRisk(weatherData, hazardZone)
+    } else if (riskLevel) {
+      calculatedRisk = riskLevel
+    }
+
+    setCurrentRisk(calculatedRisk)
+  }, [weatherData, riskLevel, hazardZone])
 
   const riskConfig = {
     safe: {
@@ -79,10 +111,35 @@ export default function RiskIndicator({ riskLevel, location = 'Butuan City', wea
           <div style={{
             fontSize: '12px',
             color: 'var(--muted)',
-            lineHeight: '1.4'
+            lineHeight: '1.4',
+            marginBottom: '8px'
           }}>
             {location} - {config.description}
           </div>
+          {hazardLabel && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '11px',
+              fontWeight: '500',
+              color: hazardColor,
+              padding: '6px 8px',
+              background: `${hazardColor}15`,
+              borderRadius: '4px',
+              border: `1px solid ${hazardColor}40`,
+              width: 'fit-content'
+            }}>
+              <div style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
+                background: hazardColor,
+                boxShadow: `0 0 6px ${hazardColor}80`
+              }}></div>
+              <span>{hazardLabel}</span>
+            </div>
+          )}
         </div>
 
         <div style={{

@@ -15,18 +15,15 @@ function Switch({ id, checked, onChange, label }){
 }
 
 export default function Settings(){
-  const [sms, setSms] = useState(false)
   const [email, setEmail] = useState(false)
 
   useEffect(()=>{
     try{
-      const s = localStorage.getItem('settings_sms') === '1'
       const e = localStorage.getItem('settings_email') === '1'
-      setSms(s); setEmail(e)
+      setEmail(e)
     }catch(e){ }
   },[])
 
-  function onChangeSms(v){ setSms(v); try{ localStorage.setItem('settings_sms', v ? '1' : '0') }catch(e){} }
   function onChangeEmail(v){ setEmail(v); try{ localStorage.setItem('settings_email', v ? '1' : '0') }catch(e){} }
 
   function logout(){
@@ -41,7 +38,6 @@ export default function Settings(){
       <p className="subtitle">Control alerts and account actions.</p>
 
       <div className="card settings-panel">
-        <Switch id="sms" label="Enable SMS Alerts" checked={sms} onChange={onChangeSms} />
         <Switch id="email" label="Enable Email Alerts" checked={email} onChange={onChangeEmail} />
 
         <div style={{height:12}} />

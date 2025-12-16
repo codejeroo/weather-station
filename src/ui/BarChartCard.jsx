@@ -1,12 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { fetchSensorLogs } from '../utils/sensorLogs'
 
 export default function BarChartCard() {
-  const items = [
-    { label: 'Humidity', value: 60, unit: '%', color: '#60a5fa', type: 'percentage' },
-    { label: 'Temperature', value: 24, unit: '°C', color: '#fb923c', type: 'thermometer' },
-    { label: 'Soil Moisture', value: 45, unit: '%', color: '#10b981', type: 'percentage' },
-    { label: 'Elevation', value: 1200, unit: 'm', color: '#a78bfa', type: 'absolute' }
-  ]
+  const [items, setItems] = useState([
+    { label: 'Humidity', value: '--', unit: '%', color: '#60a5fa', type: 'percentage' },
+    { label: 'Temperature', value: '--', unit: '°C', color: '#fb923c', type: 'thermometer' },
+    { label: 'Soil Moisture', value: '--', unit: '%', color: '#10b981', type: 'percentage' },
+    { label: 'Altitude', value: '--', unit: 'm', color: '#a78bfa', type: 'absolute' }
+  ])
+
+  useEffect(() => {
+    const loadLatestSensorData = async () => {
+      const logs = await fetchSensorLogs(1)
+      if (logs.length > 0) {
+        const latestLog = logs[0]
+        const formatValue = (val) => val === null || val === undefined ? '--' : Number(val).toFixed(2)
+        
+        setItems([
+          { label: 'Humidity', value: formatValue(latestLog.humidity), unit: '%', color: '#60a5fa', type: 'percentage' },
+          { label: 'Temperature', value: formatValue(latestLog.temperature), unit: '°C', color: '#fb923c', type: 'thermometer' },
+          { label: 'Soil Moisture', value: formatValue(latestLog.soil_moisture), unit: '%', color: '#10b981', type: 'percentage' },
+          { label: 'Altitude', value: formatValue(latestLog.altitude), unit: 'm', color: '#a78bfa', type: 'absolute' }
+        ])
+      }
+    }
+    loadLatestSensorData()
+    const interval = setInterval(loadLatestSensorData, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Calculate width based on type
   const getBarWidth = (item) => {

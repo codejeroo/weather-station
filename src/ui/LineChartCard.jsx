@@ -1,26 +1,67 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { fetchSensorLogs } from '../utils/sensorLogs'
 
-// Lightweight SVG line chart for two series (humidity and temperature)
 export default function LineChartCard() {
-  // Dummy data
-  const labels = ['0h','3h','6h','9h','12h','15h','18h','21h']
-  const temp = [20,22,24,26,25,23,21,20]
-  const hum = [60,58,55,50,48,52,57,60]
+  const [data, setData] = useState([])
 
-  // Normalize for svg height
-  const toPoints = (arr) => arr.map((v,i) => `${(i/(arr.length-1))*100},${100 - (v - Math.min(...arr))/(Math.max(...arr)-Math.min(...arr))*100}`)
-  const tPoints = toPoints(temp).join(' ')
-  const hPoints = toPoints(hum).join(' ')
-
+  useEffect(() => {
+    const loadTodayData = async () => {
+      const logs = await fetchSensorLogs(100)
+      
+      // Group data by hour for today
+      const hourlyData = {}
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      
+      logs.forEach(log => {
+        const logDate = new Date(log.created_at)
+        logDate.setMinutes(0, 0, 0)
+        
+        // Only include data from today
+        if (logDate.toDateString() === today.toDateString()) {
+          const timeKey = logDate.getHours() + 'h'
+          
+          if (!hourlyData[timeKey]) {
+            hourlyData[timeKey] = { temps: [], hums: [], time: timeKey }
+          }
+          if (log.temperature) hourlyData[timeKey].temps.push(log.temperature)
+          if (log.humidity) hourlyData[timeKey].hums.push(log.humidity)
+        }
+      })
+      
+      const chartData = Object.values(hourlyData)
+        .map(d => ({
+          time: d.time,
+          temp: d.temps.length > 0 ? Math.round(d.temps.reduce((a, b) => a + b) / d.temps.length * 10) / 10 : 0,
+          hum: d.hums.length > 0 ? Math.round(d.hums.reduce((a, b) => a + b) / d.hums.length * 10) / 10 : 0
+        }))
+        .sort((a, b) => parseInt(a.time) - parseInt(b.time))
+      
+      setData(chartData.length > 0 ? chartData : [
+        { time: '0h', temp: 0, hum: 0 },
+        { time: '12h', temp: 0, hum: 0 }
+      ])
+    }
+    loadTodayData()
+    const interval = setInterval(loadTodayData, 60000)
+    return () => clearInterval(interval)
+  }, [])
   return (
     <section className="card chart-card">
-      <h2>Humidity & Temperature(24hrs)</h2>
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="line-chart">
-        <polyline points={hPoints} fill="none" stroke="#60a5fa" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
-        <polyline points={tPoints} fill="none" stroke="#fb923c" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
-      </svg>
-      <div className="labels">
-        {labels.map(l => <span key={l}>{l}</span>)}
+      <h2>Humidity & Temperature (24hrs)</h2>
+      <div style={{ width: '100%', height: 180 }}>
+        <ResponsiveContainer>
+          <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" />
+            <XAxis dataKey="time" stroke="#9fb7d6" />
+            <YAxis stroke="#9fb7d6" domain={['auto', 'auto']} />
+            <Tooltip />
+            <Legend />
+            <Line type="monotone" dataKey="temp" stroke="#fb923c" strokeWidth={2} name="Temperature (°C)" />
+            <Line type="monotone" dataKey="hum" stroke="#60a5fa" strokeWidth={2} name="Humidity (%)" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </section>
   )

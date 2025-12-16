@@ -1,15 +1,22 @@
 {
+  "type": "module",
   "name": "microclimate-ai",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test-email": "node emailBot.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
+    "@turf/boolean-point-in-polygon": "^7.3.1",
+    "@turf/turf": "^7.3.1",
+    "dotenv": "^17.2.3",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.556.0",
+    "nodemailer": "^7.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
