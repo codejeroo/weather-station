@@ -6,3 +6,6 @@ __pycache__/
 *.pyo
 *.egg-info/
 .Python
+
+.venv/
+s
