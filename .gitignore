@@ -1,5 +1,6 @@
 node_modules/
 dist/
+predictions/
 .env
 .env.*
 !.env.example

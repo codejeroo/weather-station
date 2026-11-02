@@ -3,7 +3,6 @@ Figure 4.6, 4.7, 4.8: Prediction vs. Actual Readings Visualization (1-Hour Horiz
 Generates line graphs comparing XGBoost predictions with actual sensor data
 for Temperature, Humidity, and Soil Moisture with 1-hour forecast horizon
 """
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,6 +12,10 @@ from sklearn.model_selection import TimeSeriesSplit
 import xgboost as xgb
 import pickle
 import warnings
+import os
+os.makedirs("predictions", exist_ok=True)
+
+
 warnings.filterwarnings('ignore')
 
 print("="*80)
@@ -127,6 +130,7 @@ print(f"✓ Dataset created: {len(X):,} samples for 1-hour forecast")
 # ============================================================================
 # TRAIN MODELS & GET PREDICTIONS
 # ============================================================================
+
 print("\n[3] Training models for prediction vs. actual comparison...")
 
 # Scale features
@@ -154,11 +158,15 @@ temp_model = xgb.XGBRegressor(
     random_state=42,
     verbosity=0
 )
+
+
 temp_model.fit(X_train, yt_train)
 yt_pred = temp_model.predict(X_test)
 temp_rmse = np.sqrt(np.mean((yt_test - yt_pred)**2))
 temp_r2 = 1 - (np.sum((yt_test - yt_pred)**2) / np.sum((yt_test - np.mean(yt_test))**2))
 print(f"  ✓ Temperature: RMSE={temp_rmse:.4f}°C, R²={temp_r2:.4f}")
+
+
 
 # Train humidity model
 print("  Training humidity model...")
@@ -171,6 +179,8 @@ hum_model = xgb.XGBRegressor(
     random_state=42,
     verbosity=0
 )
+
+
 hum_model.fit(X_train, yh_train)
 yh_pred = hum_model.predict(X_test)
 hum_rmse = np.sqrt(np.mean((yh_test - yh_pred)**2))
@@ -242,7 +252,7 @@ ax.plot(pred_df['timestamp'], pred_df['pred_temp'],
 
 ax.set_xlabel('Time (UTC)', fontsize=12, fontweight='bold')
 ax.set_ylabel('Temperature (°C)', fontsize=12, fontweight='bold')
-ax.set_title('Figure 4.6: Temperature Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)', 
+ax.set_title('Temperature Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)',
              fontsize=14, fontweight='bold', pad=20)
 ax.legend(fontsize=11, loc='best', framealpha=0.95)
 ax.grid(True, alpha=0.3, linestyle='--')
@@ -258,7 +268,7 @@ ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=10,
         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
 
 plt.tight_layout()
-plt.savefig('Figure_4.6_Temperature_Prediction_vs_Actual_1H_Nov.png', dpi=300, bbox_inches='tight')
+plt.savefig('predictions/Figure_4.6_Temperature_Prediction_vs_Actual_1H_Nov.png', dpi=600, bbox_inches='tight')
 print("✓ Saved: Figure_4.6_Temperature_Prediction_vs_Actual_1H_Nov.png")
 plt.close()
 
@@ -276,7 +286,7 @@ ax.plot(pred_df['timestamp'], pred_df['pred_hum'],
 
 ax.set_xlabel('Time (UTC)', fontsize=12, fontweight='bold')
 ax.set_ylabel('Humidity (%)', fontsize=12, fontweight='bold')
-ax.set_title('Figure 4.7: Humidity Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)', 
+ax.set_title('Humidity Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)',
              fontsize=14, fontweight='bold', pad=20)
 ax.legend(fontsize=11, loc='best', framealpha=0.95)
 ax.grid(True, alpha=0.3, linestyle='--')
@@ -295,7 +305,7 @@ ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=10,
 ax.set_ylim([0, 100])
 
 plt.tight_layout()
-plt.savefig('Figure_4.7_Humidity_Prediction_vs_Actual_1H_Nov.png', dpi=300, bbox_inches='tight')
+plt.savefig('predictions/Figure_4.7_Humidity_Prediction_vs_Actual_1H_Nov.png', dpi=600, bbox_inches='tight')
 print("✓ Saved: Figure_4.7_Humidity_Prediction_vs_Actual_1H_Nov.png")
 plt.close()
 
@@ -313,7 +323,7 @@ ax.plot(pred_df['timestamp'], pred_df['pred_soil'],
 
 ax.set_xlabel('Time (UTC)', fontsize=12, fontweight='bold')
 ax.set_ylabel('Soil Moisture (Arbitrary Units)', fontsize=12, fontweight='bold')
-ax.set_title('Figure 4.8: Soil Moisture Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)', 
+ax.set_title('Soil Moisture Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)',
              fontsize=14, fontweight='bold', pad=20)
 ax.legend(fontsize=11, loc='best', framealpha=0.95)
 ax.grid(True, alpha=0.3, linestyle='--')
@@ -329,7 +339,7 @@ ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=10,
         verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
 
 plt.tight_layout()
-plt.savefig('Figure_4.8_Soil_Moisture_Prediction_vs_Actual_1H_Nov.png', dpi=300, bbox_inches='tight')
+plt.savefig('predictions/Figure_4.8_Soil_Moisture_Prediction_vs_Actual_1H_Nov.png', dpi=600, bbox_inches='tight')
 print("✓ Saved: Figure_4.8_Soil_Moisture_Prediction_vs_Actual_1H_Nov.png")
 plt.close()
 
@@ -346,7 +356,7 @@ axes[0].plot(pred_df['timestamp'], pred_df['actual_temp'],
 axes[0].plot(pred_df['timestamp'], pred_df['pred_temp'], 
             label='XGBoost Predictions', linewidth=2, color='#A23B72', marker='s', markersize=3, alpha=0.8, linestyle='--')
 axes[0].set_ylabel('Temperature (°C)', fontsize=11, fontweight='bold')
-axes[0].set_title('Figure 4.6: Temperature Predictions (RMSE: {:.4f}°C, R²: {:.4f})'.format(temp_rmse, temp_r2), 
+axes[0].set_title('Temperature Predictions (RMSE: {:.4f}°C, R²: {:.4f})'.format(temp_rmse, temp_r2),
                  fontsize=12, fontweight='bold')
 axes[0].legend(fontsize=10, loc='best')
 axes[0].grid(True, alpha=0.3, linestyle='--')
@@ -357,7 +367,7 @@ axes[1].plot(pred_df['timestamp'], pred_df['actual_hum'],
 axes[1].plot(pred_df['timestamp'], pred_df['pred_hum'], 
             label='XGBoost Predictions', linewidth=2, color='#A23B72', marker='s', markersize=3, alpha=0.8, linestyle='--')
 axes[1].set_ylabel('Humidity (%)', fontsize=11, fontweight='bold')
-axes[1].set_title('Figure 4.7: Humidity Predictions (RMSE: {:.4f}%, R²: {:.4f})'.format(hum_rmse, hum_r2), 
+axes[1].set_title('Humidity Predictions (RMSE: {:.4f}%, R²: {:.4f})'.format(hum_rmse, hum_r2),
                  fontsize=12, fontweight='bold')
 axes[1].set_ylim([0, 100])
 axes[1].legend(fontsize=10, loc='best')
@@ -370,7 +380,7 @@ axes[2].plot(pred_df['timestamp'], pred_df['pred_soil'],
             label='XGBoost Predictions', linewidth=2, color='#A23B72', marker='s', markersize=3, alpha=0.8, linestyle='--')
 axes[2].set_xlabel('Time (UTC)', fontsize=11, fontweight='bold')
 axes[2].set_ylabel('Soil Moisture (Arb. Units)', fontsize=11, fontweight='bold')
-axes[2].set_title('Figure 4.8: Soil Moisture Predictions (RMSE: {:.2f}, R²: {:.4f})'.format(soil_rmse, soil_r2), 
+axes[2].set_title('Soil Moisture Predictions (RMSE: {:.2f}, R²: {:.4f})'.format(soil_rmse, soil_r2),
                  fontsize=12, fontweight='bold')
 axes[2].legend(fontsize=10, loc='best')
 axes[2].grid(True, alpha=0.3, linestyle='--')
@@ -384,10 +394,10 @@ plt.setp(axes[0].get_xticklabels(), visible=False)
 plt.setp(axes[1].get_xticklabels(), visible=False)
 plt.xticks(rotation=45, ha='right')
 
-plt.suptitle('Figures 4.6-4.8: XGBoost Model Performance - Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)', 
+plt.suptitle('XGBoost Model Performance - Prediction vs. Actual Readings\n(1-Hour Forecast Horizon - November Data)',
              fontsize=15, fontweight='bold', y=0.995)
 plt.tight_layout()
-plt.savefig('Figures_4.6-4.8_Combined_Summary_1H_Nov.png', dpi=300, bbox_inches='tight')
+plt.savefig('predictions/Figures_4.6-4.8_Combined_Summary_1H_Nov.png', dpi=600, bbox_inches='tight')
 print("✓ Saved: Figures_4.6-4.8_Combined_Summary_1H_Nov.png")
 plt.close()
 
@@ -444,8 +454,8 @@ export_df['Temp_Error_C'] = export_df['Actual_Temperature_C'] - export_df['Predi
 export_df['Humidity_Error_Pct'] = export_df['Actual_Humidity_Pct'] - export_df['Predicted_Humidity_Pct']
 export_df['Soil_Moisture_Error'] = export_df['Actual_Soil_Moisture'] - export_df['Predicted_Soil_Moisture']
 
-export_df.to_csv('prediction_results_1H_Nov.csv', index=False)
-print("✓ Saved: prediction_results_1H_Nov.csv")
+export_df.to_csv('predictions/prediction_results_1H_Nov.csv', index=False)
+print("✓ Saved: predictions/prediction_results_1H_Nov.csv")
 
 # Save metrics summary
 metrics_summary = {
@@ -476,18 +486,18 @@ metrics_summary = {
 }
 
 import json
-with open('prediction_metrics_1H_Nov.json', 'w') as f:
+with open('predictions/prediction_metrics_1H_Nov.json', 'w') as f:
     json.dump(metrics_summary, f, indent=2)
-print("✓ Saved: prediction_metrics_1H_Nov.json")
+print("✓ Saved: predictions/prediction_metrics_1H_Nov.json")
 
 print("\n" + "="*80)
 print("✓ VISUALIZATION GENERATION COMPLETE (NOVEMBER DATA)")
 print("="*80)
 print("\nGenerated Files:")
-print("  • Figure_4.6_Temperature_Prediction_vs_Actual_1H_Nov.png")
-print("  • Figure_4.7_Humidity_Prediction_vs_Actual_1H_Nov.png")
-print("  • Figure_4.8_Soil_Moisture_Prediction_vs_Actual_1H_Nov.png")
-print("  • Figures_4.6-4.8_Combined_Summary_1H_Nov.png")
+print("  • predictions/Figure_4.6_Temperature_Prediction_vs_Actual_1H_Nov.png")
+print("  • predictions/Figure_4.7_Humidity_Prediction_vs_Actual_1H_Nov.png")
+print("  • predictions/Figure_4.8_Soil_Moisture_Prediction_vs_Actual_1H_Nov.png")
+print("  • predictions/Figures_4.6-4.8_Combined_Summary_1H_Nov.png")
 print("  • prediction_results_1H_Nov.csv")
 print("  • prediction_metrics_1H_Nov.json")
 print("\n" + "="*80 + "\n")
