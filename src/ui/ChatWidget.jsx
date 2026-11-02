@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { ChevronDown, Maximize2, Send, User, Bot } from 'lucide-react'
+import { buildSystemContext } from '../utils/aiContext'
+
+const OPENROUTER_MODEL = 'nvidia/nemotron-3-super-120b-a12b:free'
 
 export default function ChatWidget() {
   const [messages, setMessages] = useState([
@@ -40,12 +43,17 @@ export default function ChatWidget() {
     }
 
     try {
+      // Inject live sensor readings + forecast as grounding context (RAG-lite)
+      const systemContext = await buildSystemContext()
       const body = {
-        model: 'tngtech/deepseek-r1t2-chimera:free',
-        messages: nextMessages.map(msg => ({
-          role: msg.from === 'user' ? 'user' : 'assistant',
-          content: msg.text
-        }))
+        model: OPENROUTER_MODEL,
+        messages: [
+          { role: 'system', content: systemContext },
+          ...nextMessages.map(msg => ({
+            role: msg.from === 'user' ? 'user' : 'assistant',
+            content: msg.text
+          }))
+        ]
       }
 
       const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {

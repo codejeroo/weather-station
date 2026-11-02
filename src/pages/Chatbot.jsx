@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { buildSystemContext } from '../utils/aiContext'
 
 export default function Chatbot(){
   const [messages, setMessages] = useState([
-    { role: 'system', content: "You're MicroClimate.AI, an advanced climate monitoring system based in Butuan City." },
-    { role: 'assistant', content: "Hi! I'm your MicroClimate.AI assistant. Ask me about climate data, weather patterns, or local environmental insights!" }
+    { role: 'assistant', content: "Hi! I'm your MicroClimate.AI assistant. Ask me about the current readings, rain chances, or the forecast for our Butuan City stations!" }
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const listRef = useRef(null)
+
+  const OPENROUTER_MODEL = 'nvidia/nemotron-3-super-120b-a12b:free'
 
   useEffect(()=>{
     if(listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight
@@ -38,7 +40,13 @@ export default function Chatbot(){
     }
 
     try{
-      const body = { model: 'tngtech/deepseek-r1t2-chimera:free', messages: nextMessages }
+      // Inject live sensor readings + forecast as grounding context (RAG-lite)
+      const systemContext = await buildSystemContext()
+      const history = nextMessages.filter(m => m.role !== 'system')
+      const body = {
+        model: OPENROUTER_MODEL,
+        messages: [{ role: 'system', content: systemContext }, ...history]
+      }
 
       const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
