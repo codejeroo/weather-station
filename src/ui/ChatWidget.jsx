@@ -65,7 +65,14 @@ export default function ChatWidget() {
         body: JSON.stringify(body)
       })
 
-      if (!resp.ok) throw new Error(`API error: ${resp.status}`)
+      if (!resp.ok) {
+        let detail = ''
+        try {
+          const errBody = await resp.json()
+          detail = errBody?.error?.message || errBody?.message || ''
+        } catch { /* non-JSON error body */ }
+        throw new Error(`API error: ${resp.status}${detail ? ` — ${detail}` : ''}`)
+      }
 
       const data = await resp.json()
       const botReply = data?.choices?.[0]?.message?.content || 'Sorry, I couldn\'t process that.'
@@ -73,7 +80,7 @@ export default function ChatWidget() {
       setMessages(m => [...m, { id: Date.now() + 1, from: 'bot', text: botReply }])
     } catch (err) {
       console.error('Chat error:', err)
-      setMessages(m => [...m, { id: Date.now() + 1, from: 'bot', text: 'Sorry, I encountered an error. Please try again.' }])
+      setMessages(m => [...m, { id: Date.now() + 1, from: 'bot', text: `Sorry, that didn't work. ${err.message}` }])
     } finally {
       setLoading(false)
     }

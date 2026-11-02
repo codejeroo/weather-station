@@ -57,7 +57,11 @@ export default function Chatbot(){
         body: JSON.stringify(body)
       })
 
-      if(!resp.ok) throw new Error(`API error ${resp.status}`)
+      if(!resp.ok){
+        let detail = ''
+        try { detail = (await resp.json())?.error?.message || '' } catch { /* non-JSON error body */ }
+        throw new Error(`API error ${resp.status}${detail ? ` — ${detail}` : ''}`)
+      }
       const data = await resp.json().catch(() => null)
 
       // robust extraction of assistant text
@@ -80,7 +84,7 @@ export default function Chatbot(){
       setMessages(m => [...m, { role: 'assistant', content: String(assistantText) }])
     }catch(err){
       console.error(err)
-      setMessages(m => [...m, { role: 'assistant', content: 'Sorry, I could not reach the chat service.' }])
+      setMessages(m => [...m, { role: 'assistant', content: `Sorry, I could not reach the chat service. ${err.message}` }])
     }finally{
       setLoading(false)
     }
